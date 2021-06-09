@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Codelab - CustomView</string>
+    <string name="fan_control">Controle do Ventilador</string>
+    <string name="fan_off">Desligado</string>
+    <string name="fan_low">1</string>
+    <string name="fan_medium">2</string>
+    <string name="fan_high">3</string>
+    <string name="change">Mudar Velocidade</string>
+    <string name="reset">Resetar</string>
+</resources>
