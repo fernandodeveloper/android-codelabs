@@ -13,6 +13,13 @@ private enum class FanSpeed(val label: Int) {
     LOW(R.string.fan_low),
     MEDIUM(R.string.fan_medium),
     HIGH(R.string.fan_high);
+
+    fun next() = when (this) {
+        OFF -> LOW
+        LOW -> MEDIUM
+        MEDIUM -> HIGH
+        HIGH -> OFF
+    }
 }
 
 private const val RADIUS_OFFSET_LABEL = 30
@@ -24,6 +31,10 @@ class DialView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
+    init {
+        isClickable = true
+    }
 
     private var radius = 0.0f                   // Radius of the circle.
     private var fanSpeed = FanSpeed.OFF         // The active selection.
@@ -60,7 +71,7 @@ class DialView @JvmOverloads constructor(
         val markerRadius = radius + RADIUS_OFFSET_INDICATOR
         pointPosition.computeXYForSpeed(fanSpeed, markerRadius)
         paint.color = Color.BLACK
-        canvas.drawCircle(pointPosition.x, pointPosition.y, radius/12, paint)
+        canvas.drawCircle(pointPosition.x, pointPosition.y, radius / 12, paint)
         // Draw the text labels.
         val labelRadius = radius + RADIUS_OFFSET_LABEL
         for (i in FanSpeed.values()) {
@@ -68,6 +79,16 @@ class DialView @JvmOverloads constructor(
             val label = resources.getString(i.label)
             canvas.drawText(label, pointPosition.x, pointPosition.y, paint)
         }
+    }
+
+    override fun performClick(): Boolean {
+        if (super.performClick()) return true
+
+        fanSpeed = fanSpeed.next()
+        contentDescription = resources.getString(fanSpeed.label)
+
+        invalidate()
+        return true
     }
 }
 
